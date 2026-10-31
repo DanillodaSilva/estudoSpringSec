@@ -6,7 +6,7 @@ spring:
     import: optional:file:.env[.properties]
 
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/helpdesk}
+    url: ${DB_URL:jdbc:mysql://localhost:3307/helpdesk}
     username: ${DB_USERNAME:helpdesk}
     password: ${DB_PASSWORD}
 

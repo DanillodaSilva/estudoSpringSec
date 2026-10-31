@@ -9,7 +9,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD no .env}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?defina MYSQL_ROOT_PASSWORD no .env}
     ports:
-      - "127.0.0.1:${DB_PORT:-3306}:3306"
+      - "127.0.0.1:${DB_PORT:-3307}:3306"
     volumes:
       - helpdesk-mysql-data:/var/lib/mysql
     healthcheck:
