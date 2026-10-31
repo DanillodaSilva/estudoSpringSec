@@ -1,6 +1,7 @@
 package br.com.estudos.helpdesk.exception.handler;
 
 import br.com.estudos.helpdesk.exception.ConflitoException;
+import br.com.estudos.helpdesk.exception.ParametroInvalidoException;
 import br.com.estudos.helpdesk.exception.RecursoNaoEncontradoException;
 import br.com.estudos.helpdesk.exception.RegraNegocioException;
 import org.slf4j.Logger;
@@ -58,6 +59,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 "A operação viola uma restrição de integridade dos dados.");
     }
 
+    @ExceptionHandler(ParametroInvalidoException.class)
+    public ProblemDetail tratarParametroInvalido(ParametroInvalidoException ex) {
+        return problema(HttpStatus.BAD_REQUEST, "Parâmetro inválido", ex.getMessage());
+    }
+
+    // Ordenação por propriedade inexistente nas consultas derivadas do Spring Data (?sort=xyz).
     @ExceptionHandler(PropertyReferenceException.class)
     public ProblemDetail tratarPropriedadeInvalida(PropertyReferenceException ex) {
         return problema(HttpStatus.BAD_REQUEST, "Parâmetro inválido",
@@ -77,8 +84,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
         List<ErroCampo> erros = ex.getBindingResult().getFieldErrors().stream()
-                .map(erro -> new ErroCampo(erro.getField(),
-                        Objects.requireNonNullElse(erro.getDefaultMessage(), "valor inválido")))
+                // Falhas de conversão (ex.: ?status=XYZ) trazem mensagens técnicas; não as expomos.
+                .map(erro -> new ErroCampo(erro.getField(), erro.isBindingFailure()
+                        ? "valor inválido"
+                        : Objects.requireNonNullElse(erro.getDefaultMessage(), "valor inválido")))
                 .toList();
 
         ProblemDetail problema = problema(HttpStatus.BAD_REQUEST, "Dados inválidos",
