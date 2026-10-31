@@ -18,7 +18,8 @@ import jakarta.persistence.Table;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "chamados")
@@ -62,12 +63,12 @@ public class Chamado {
     private Categoria categoria;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime dataAbertura;
+    private Instant dataAbertura;
 
     @Column(nullable = false)
-    private LocalDateTime dataAtualizacao;
+    private Instant dataAtualizacao;
 
-    private LocalDateTime dataEncerramento;
+    private Instant dataEncerramento;
 
     protected Chamado() {
     }
@@ -82,13 +83,13 @@ public class Chamado {
 
     @PrePersist
     void aoCriar() {
-        dataAbertura = LocalDateTime.now();
+        dataAbertura = Instant.now().truncatedTo(ChronoUnit.MICROS);
         dataAtualizacao = dataAbertura;
     }
 
     @PreUpdate
     void aoAtualizar() {
-        dataAtualizacao = LocalDateTime.now();
+        dataAtualizacao = Instant.now().truncatedTo(ChronoUnit.MICROS);
     }
 
     public boolean isFechado() {
@@ -159,19 +160,19 @@ public class Chamado {
         this.categoria = categoria;
     }
 
-    public LocalDateTime getDataAbertura() {
+    public Instant getDataAbertura() {
         return dataAbertura;
     }
 
-    public LocalDateTime getDataAtualizacao() {
+    public Instant getDataAtualizacao() {
         return dataAtualizacao;
     }
 
-    public LocalDateTime getDataEncerramento() {
+    public Instant getDataEncerramento() {
         return dataEncerramento;
     }
 
-    public void setDataEncerramento(LocalDateTime dataEncerramento) {
+    public void setDataEncerramento(Instant dataEncerramento) {
         this.dataEncerramento = dataEncerramento;
     }
 }

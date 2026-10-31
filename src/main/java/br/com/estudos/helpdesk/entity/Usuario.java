@@ -12,7 +12,8 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Pessoa cadastrada na organização. Nesta etapa é apenas uma entidade de domínio:
@@ -40,10 +41,10 @@ public class Usuario {
     private Equipe equipe;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime dataCriacao;
+    private Instant dataCriacao;
 
     @Column(nullable = false)
-    private LocalDateTime dataAtualizacao;
+    private Instant dataAtualizacao;
 
     protected Usuario() {
     }
@@ -56,13 +57,13 @@ public class Usuario {
 
     @PrePersist
     void aoCriar() {
-        dataCriacao = LocalDateTime.now();
+        dataCriacao = Instant.now().truncatedTo(ChronoUnit.MICROS);
         dataAtualizacao = dataCriacao;
     }
 
     @PreUpdate
     void aoAtualizar() {
-        dataAtualizacao = LocalDateTime.now();
+        dataAtualizacao = Instant.now().truncatedTo(ChronoUnit.MICROS);
     }
 
     public boolean pertenceA(Equipe outraEquipe) {
@@ -106,11 +107,11 @@ public class Usuario {
         this.equipe = equipe;
     }
 
-    public LocalDateTime getDataCriacao() {
+    public Instant getDataCriacao() {
         return dataCriacao;
     }
 
-    public LocalDateTime getDataAtualizacao() {
+    public Instant getDataAtualizacao() {
         return dataAtualizacao;
     }
 }

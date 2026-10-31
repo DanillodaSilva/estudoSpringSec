@@ -17,7 +17,8 @@ import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Registro imutável de uma mudança de status. Ainda não identifica quem fez a alteração:
@@ -47,7 +48,7 @@ public class HistoricoStatus {
     private StatusChamado statusNovo;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime dataAlteracao;
+    private Instant dataAlteracao;
 
     protected HistoricoStatus() {
     }
@@ -60,7 +61,7 @@ public class HistoricoStatus {
 
     @PrePersist
     void aoCriar() {
-        dataAlteracao = LocalDateTime.now();
+        dataAlteracao = Instant.now().truncatedTo(ChronoUnit.MICROS);
     }
 
     public Long getId() {
@@ -79,7 +80,7 @@ public class HistoricoStatus {
         return statusNovo;
     }
 
-    public LocalDateTime getDataAlteracao() {
+    public Instant getDataAlteracao() {
         return dataAlteracao;
     }
 }

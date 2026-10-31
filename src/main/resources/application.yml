@@ -17,6 +17,9 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 50
+        # Datas são Instant e ficam gravadas em UTC, independentemente do fuso do servidor.
+        jdbc:
+          time_zone: UTC
 
   flyway:
     # db/dev-data contém dados fictícios para testes manuais; remova-o via FLYWAY_LOCATIONS se não quiser carregá-los.

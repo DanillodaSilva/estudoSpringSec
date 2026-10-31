@@ -12,7 +12,8 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "comentarios")
@@ -34,10 +35,10 @@ public class Comentario {
     private Chamado chamado;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime dataCriacao;
+    private Instant dataCriacao;
 
     @Column(nullable = false)
-    private LocalDateTime dataAtualizacao;
+    private Instant dataAtualizacao;
 
     protected Comentario() {
     }
@@ -50,13 +51,13 @@ public class Comentario {
 
     @PrePersist
     void aoCriar() {
-        dataCriacao = LocalDateTime.now();
+        dataCriacao = Instant.now().truncatedTo(ChronoUnit.MICROS);
         dataAtualizacao = dataCriacao;
     }
 
     @PreUpdate
     void aoAtualizar() {
-        dataAtualizacao = LocalDateTime.now();
+        dataAtualizacao = Instant.now().truncatedTo(ChronoUnit.MICROS);
     }
 
     public Long getId() {
@@ -79,11 +80,11 @@ public class Comentario {
         return chamado;
     }
 
-    public LocalDateTime getDataCriacao() {
+    public Instant getDataCriacao() {
         return dataCriacao;
     }
 
-    public LocalDateTime getDataAtualizacao() {
+    public Instant getDataAtualizacao() {
         return dataAtualizacao;
     }
 }

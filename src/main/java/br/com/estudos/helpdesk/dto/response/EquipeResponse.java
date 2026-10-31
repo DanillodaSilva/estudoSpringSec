@@ -1,6 +1,6 @@
 package br.com.estudos.helpdesk.dto.response;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 public record EquipeResponse(
@@ -9,6 +9,6 @@ public record EquipeResponse(
         String descricao,
         boolean ativo,
         List<ResumoResponse> membros,
-        LocalDateTime dataCriacao,
-        LocalDateTime dataAtualizacao) {
+        Instant dataCriacao,
+        Instant dataAtualizacao) {
 }
