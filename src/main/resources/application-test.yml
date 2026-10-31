@@ -1,0 +1,5 @@
+# Perfil usado pelos testes de integração. O datasource é fornecido pelo Testcontainers (@ServiceConnection).
+spring:
+  flyway:
+    # Somente o esquema versionado; os dados fictícios de desenvolvimento não são carregados nos testes.
+    locations: classpath:db/migration

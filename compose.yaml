@@ -1,0 +1,22 @@
+# Uso exclusivo para subir o MySQL local. A aplicação Java roda fora do Docker.
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: helpdesk-mysql
+    environment:
+      MYSQL_DATABASE: helpdesk
+      MYSQL_USER: ${DB_USERNAME:?defina DB_USERNAME no .env}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD no .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?defina MYSQL_ROOT_PASSWORD no .env}
+    ports:
+      - "127.0.0.1:${DB_PORT:-3306}:3306"
+    volumes:
+      - helpdesk-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  helpdesk-mysql-data:
