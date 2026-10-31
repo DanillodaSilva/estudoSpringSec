@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -33,6 +34,7 @@ public class Equipe {
 
     // Lado inverso: o vínculo é mantido por Usuario.equipe.
     @OneToMany(mappedBy = "equipe")
+    @OrderBy("nome")
     private List<Usuario> membros = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
